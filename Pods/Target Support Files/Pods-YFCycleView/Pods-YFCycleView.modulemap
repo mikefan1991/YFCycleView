@@ -1,0 +1,6 @@
+framework module Pods_YFCycleView {
+  umbrella header "Pods-YFCycleView-umbrella.h"
+
+  export *
+  module * { export * }
+}
