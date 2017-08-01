@@ -29,7 +29,7 @@
     
     // 展示style
     YFCycleView *cycleView1 = [[YFCycleView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 200) items:@[@"http://static8.photo.sina.com.cn/orignal/494929ff8c1fc94db1aa7", @"http://images2015.cnblogs.com/blog/791499/201608/791499-20160824143404355-59469562.png", image, @"http://loudwire.com/files/2013/02/Linkin-Park.jpg", @"http://www.chartattack.com/wp-content/uploads/2017/05/LP.jpg"] style:YFCycleViewSytleExhibit];
-    cycleView1.hidePageControl = NO;
+//    cycleView1.hidePageControl = NO;
     // 设定滚动的间隔时间
     cycleView1.interval = 3.0;
     cycleView1.scrollDirection = YFCycleViewScrollDirectionRight;

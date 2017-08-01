@@ -75,9 +75,7 @@
     if (_pageControl == nil) {
         CGFloat y = self.bounds.size.height - PageControlHeight;
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, y, [UIScreen mainScreen].bounds.size.width, PageControlHeight)];
-//        CGPoint center = _pageControl.center;
-//        center.x = self.center.x;
-//        _pageControl.center = center;
+
         _pageControl.numberOfPages = self.items.count;
         _pageControl.hidesForSinglePage = YES;
         _pageControl.userInteractionEnabled = NO;
@@ -98,7 +96,6 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self addSubview:self.collectionView];
         // 设置自动滚动默认为YES
         _autoScroll = YES;
         
@@ -107,21 +104,22 @@
         
         // 设置Timer的默认interval为2秒
         _interval = 2.0;
+        
+        // 添加collectionView
+        [self addSubview:self.collectionView];
+        // 添加pageControl
+        [self addSubview:self.pageControl];
     }
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame items:(NSArray *)items {
+    // items赋值放在前面由于pageControl懒加载中会设置页数
+    _items = items;
     if (self = [self initWithFrame:frame]) {
-        _items = items;
         // 将collectionView滚动到中间的位置
         if (self.items.count > 1) {
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:MaxNumberOfSections / 2] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
-        }
-        
-        [self addSubview:self.pageControl];
-        if (self.style == YFCycleViewSytleExhibit) {
-            [self.pageControl setHidden:YES];
         }
         
         [self startTimer];
@@ -130,9 +128,12 @@
 }
 
 - (instancetype)initWithFrame:(CGRect)frame items:(NSArray *)items style:(YFCycleViewStyle)style {
+    // style赋值放在前面是由于collectionView的懒加载中需要进行判断
     _style = style;
     if (self = [self initWithFrame:frame items:items]) {
-        
+        if (style == YFCycleViewSytleExhibit) {
+            self.hidePageControl = YES;
+        }
     }
     return self;
 }
@@ -140,16 +141,17 @@
 - (instancetype)initWithFrame:(CGRect)frame items:(NSArray *)items scrollInterval:(NSTimeInterval)interval {
     _interval = interval;
     if (self = [self initWithFrame:frame items:items]) {
-        
     }
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame items:(NSArray *)items scrollInterval:(CGFloat)interval style:(YFCycleViewStyle)style {
-    _interval = interval;
+    // style赋值放在前面是由于collectionView的懒加载中需要进行判断
     _style = style;
     if (self = [self initWithFrame:frame items:items scrollInterval:interval]) {
-        
+        if (style == YFCycleViewSytleExhibit) {
+            self.hidePageControl = YES;
+        }
     }
     return self;
 }
@@ -174,13 +176,29 @@
     }
 }
 
+- (void)setItems:(NSArray *)items {
+    _items = items;
+    
+    self.pageControl.numberOfPages = items.count;
+    
+    // 将collectionView滚动到中间的位置
+    if (items.count > 1) {
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:MaxNumberOfSections / 2] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+    }
+    
+    if (self.timer) {
+        [self stopTimer];
+    }
+    [self startTimer];
+}
+
 - (void)setHidePageControl:(BOOL)hidePageControl {
     _hidePageControl = hidePageControl;
     if (hidePageControl == YES) {
-        self.pageControl.hidden = YES;
+        [self.pageControl setHidden:YES];
     }
     else {
-        self.pageControl.hidden = NO;
+        [self.pageControl setHidden:NO];
     }
 }
 
