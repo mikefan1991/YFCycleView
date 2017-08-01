@@ -14,7 +14,7 @@
 @property (nonatomic, strong) UIImageView *imageView;
 
 /** 图像的下载地址 */
-@property (nonatomic, strong) NSString *imageURL;
+@property (nonatomic, copy) NSString *imageURL;
 
 /** 图像 */
 @property (nonatomic, strong) UIImage *image;

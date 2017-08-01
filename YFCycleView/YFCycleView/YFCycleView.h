@@ -14,6 +14,11 @@ typedef enum{
     YFCycleViewSytleExhibit
 }YFCycleViewStyle;
 
+typedef enum {
+    YFCycleViewScrollDirectionLeft,
+    YFCycleViewScrollDirectionRight
+}YFCycleViewScrollDirection;
+
 @protocol YFCycleViewDelegate <NSObject>
 @optional
 - (void)cycleView:(YFCycleView *)cycleView didSelectItem:(NSInteger)item;
@@ -26,6 +31,9 @@ typedef enum{
 
 /** 是否可以自动滚动，默认为YES */
 @property (nonatomic, assign) BOOL autoScroll;
+
+/** 滚动方向，默认为向左滚动 */
+@property (nonatomic, assign) BOOL scrollDirection;
 
 /** 是否隐藏pageControl */
 @property (nonatomic, assign) BOOL hidePageControl;

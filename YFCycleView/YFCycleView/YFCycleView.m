@@ -162,6 +162,10 @@
     }
 }
 
+- (void)setScrollDirection:(BOOL)scrollDirection {
+    _scrollDirection = scrollDirection;
+}
+
 - (void)setInterval:(NSTimeInterval)interval {
     _interval = interval;
     if (self.timer) {
@@ -252,7 +256,13 @@
     NSIndexPath *resetIndexPath = [self resetIndexPath];
     
     // 计算下一个页面的位置
-    NSIndexPath *nextIndexPath = [self getRightIndexPath:resetIndexPath];
+    NSIndexPath *nextIndexPath = nil;
+    if (self.scrollDirection == YFCycleViewScrollDirectionLeft) {
+        nextIndexPath = [self getRightIndexPath:resetIndexPath];
+    }
+    else if (self.scrollDirection == YFCycleViewScrollDirectionRight) {
+        nextIndexPath = [self getLeftIndexPath:resetIndexPath];
+    }
     
     // 滚动到下一个页面
     [self.collectionView scrollToItemAtIndexPath:nextIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];

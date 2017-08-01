@@ -32,6 +32,7 @@
     cycleView1.hidePageControl = NO;
     // 设定滚动的间隔时间
     cycleView1.interval = 3.0;
+    cycleView1.scrollDirection = YFCycleViewScrollDirectionRight;
     cycleView1.delegate = self;
     //cycleView.autoScroll = NO;
     [self.view addSubview:cycleView1];
